@@ -1,45 +1,73 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-    /* Custom CSS */
-    body {
-        background-color: rgb(14, 14, 16);
-    }
-    .register-container {
-        max-width: 500px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #07070a;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(15, 13, 36, 0.1);
-    }
-    .register-container h2 {
-        margin-bottom: 20px;
-        color: #fff;
-    }
-    .register-container button {
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        background-color: rgb(12, 9, 31);
+        max-width: 600px;
+        padding: 20px;
+        background-color: #121212;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        margin: 50vh auto;
+        margin-top: 10vh;
+    }
+    .form-container button {
+        width: 100%;
+        background-color: #7a5af5;
         border: none;
-    }        
-    .register-container button:hover {
-        background-color: rgb(36, 3, 106);
-    }
-    .register-container .form-control {
-        background-color: #1a1a1a;
         color: #fff;
-        
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
     }
-    .register-container .form-label {
+    .form-container button:hover {
+        background-color: #4b2e4e;
+    }
+
+    .form-container .form-control {
+        background-color: #2f2b3a;
         color: #fff;
-    }      
-</style>
-<div class="register-container">
-    <h2 class="text-center">Login</h2>
-    <form novalidate action="{% url 'accounts:login' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit" class="btn btn-primary mt-3 button">Login</button>
-    </form>
-</div>
+        border: 1px solid #444;
+        padding: 2px;
+        border-radius: 1px;
+        margin-bottom: 10px;
+        width: 300px;
+    }
+    .form-container .form-control:focus {
+        border: 1px solid #7a5af5;
+    }
+    .form-container .form-label {
+        color: #fff;
+        margin-bottom: 2px;
+    }
+    .text-center {
+        text-align: center;
+        color: #fff;
+    }
+    .register-text {
+        color: #fff;
+        text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        width: 60%;
+    }
+    .register-container-text {
+        margin-bottom: 20px;
+        width: auto;
+    }
+</style>      
+<div class="form-container">
+    <div class="register-container-text">
+        <h2 class="text-center register-text">Login</h2>
+        <p class="text-center register-text">Please login to your account. If you do not have an account, you can register <a href="{% url 'accounts:register' %}">here</a>.</p>
+    </div>
+        <form novalidate action="{% url 'accounts:login' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary mt-3 button">Register</button>
+        </form>
+    </div>
 {% endblock %}
