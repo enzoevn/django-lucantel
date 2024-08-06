@@ -1,0 +1,19 @@
+body {
+    background-color: #1a1625;
+    color: #fff;
+}
+.bg-secondary-custom {
+    background-color: #121212;
+}
+.btn-dark-custom {
+    background-color: #7a5af5;
+    border: 2px solid #121212;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-dark-custom:hover {
+    color: #fff;
+    background-color: #4b2e4e;
+    border-color: #1d2533;
+}

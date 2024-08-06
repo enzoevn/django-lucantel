@@ -1,64 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
 {% block content %}
-<style>
-    .form-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        max-width: 600px;
-        padding: 20px;
-        background-color: #121212;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        margin: 50vh auto;
-        margin-top: 10vh;
-    }
-    .form-container button {
-        width: 100%;
-        background-color: #7a5af5;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .form-container button:hover {
-        background-color: #4b2e4e;
-    }
-
-    .form-container .form-control {
-        background-color: #2f2b3a;
-        color: #fff;
-        border: 1px solid #444;
-        padding: 2px;
-        border-radius: 1px;
-        margin-bottom: 10px;
-        width: 300px;
-    }
-    .form-container .form-control:focus {
-        border: 1px solid #7a5af5;
-    }
-    .form-container .form-label {
-        color: #fff;
-        margin-bottom: 2px;
-    }
-    .text-center {
-        text-align: center;
-        color: #fff;
-    }
-    .register-text {
-        color: #fff;
-        text-align: center;
-        margin-left: 0;
-        margin-right: 0;
-        width: 60%;
-    }
-    .register-container-text {
-        margin-bottom: 20px;
-        width: auto;
-    }
-</style>      
+<link rel="stylesheet" href="{% static 'accounts/css/forms.css' %}">    
 <div class="form-container">
     <div class="register-container-text">
         <h2 class="text-center register-text">Login</h2>
@@ -67,7 +11,7 @@
         <form novalidate action="{% url 'accounts:login' %}" method="post">
             {% csrf_token %}
             {{ form }}
-            <button type="submit" class="btn btn-primary mt-3 button">Register</button>
+            <button type="submit" class="btn btn-primary mt-3 button">Sign in</button>
         </form>
     </div>
 {% endblock %}

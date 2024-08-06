@@ -14,6 +14,8 @@ from pathlib import Path
 
 from django.forms.renderers import TemplatesSetting
 
+import os
+
 class CustomTemplatesSetting(TemplatesSetting):
     form_template_name = 'form_snippet.html'
 
@@ -127,6 +129,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Use a different directory for collected static files
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Ensure this directory exists
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -134,3 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'index'  # Redirect to the index page after login
 LOGOUT_REDIRECT_URL = 'login'  # Redirect to the login page after logout
+
+# Media files (uploads)
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')

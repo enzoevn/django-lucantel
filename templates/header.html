@@ -1,3 +1,5 @@
+{% load static %}
+<link href="{% static 'website/css/styles.css' %}" rel="stylesheet">
 <header class="p-3 bg-secondary-custom text-white">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -13,6 +15,7 @@
                 <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><a href="{% url 'website:app' %}" class="nav-link px-2 text-white">App</a></li>
             </ul>
 
             <div class="d-flex">

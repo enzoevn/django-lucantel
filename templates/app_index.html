@@ -1,0 +1,60 @@
+{% load static %}
+<style>
+    .app-content {
+        padding: 20px;
+    }
+</style>
+
+<div class="app-content">
+    <h1>Home</h1>
+    <div>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="images" multiple>
+            <button type="button" class="button-app" onclick="uploadImages()">Upload</button>
+        </form>
+        <button type="button" class="button-app" onclick="showImages()">Show Images</button>
+        <div id="imageGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;"></div>
+        <p id="fileCount"></p>
+        <script>
+            function uploadImages() {
+                const form = document.getElementById('uploadForm');
+                const formData = new FormData(form);
+        
+                fetch('/upload/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    document.getElementById('fileCount').innerText = `${data.files_count} files uploaded`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            function showImages() {
+                fetch('/list_images/')
+                .then(response => response.json())
+                .then(data => {
+                    const imageGrid = document.getElementById('imageGrid');
+                    imageGrid.innerHTML = '';
+                    data.images.forEach(image => {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = `/${image}`;
+                        imgElement.style.width = '100px';
+                        imgElement.style.height = '100px';
+                        imgElement.style.objectFit = 'cover';
+                        imageGrid.appendChild(imgElement);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        </script>
+    </div>
+</div>

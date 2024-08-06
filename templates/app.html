@@ -1,9 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'app_base.html' %}
+{% load static %}
+{% block title %}App{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Welcome, {{ user.username }}! <a href="{% url 'accounts:logout' %}">Logout</a></p>
-{% else %}
-<p><a href="{% url 'accounts:login' %}">Login</a></p>
-{% endif %}
+    {% if user.is_authenticated %}
+
+    {% include 'app_index.html' %}
+
+    {% endif %}
 {% endblock %}
