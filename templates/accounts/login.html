@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* Custom CSS */
+    body {
+        background-color: rgb(14, 14, 16);
+    }
+    .register-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #07070a;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(15, 13, 36, 0.1);
+    }
+    .register-container h2 {
+        margin-bottom: 20px;
+        color: #fff;
+    }
+    .register-container button {
+        width: 100%;
+        background-color: rgb(12, 9, 31);
+        border: none;
+    }        
+    .register-container button:hover {
+        background-color: rgb(36, 3, 106);
+    }
+    .register-container .form-control {
+        background-color: #1a1a1a;
+        color: #fff;
+        
+    }
+    .register-container .form-label {
+        color: #fff;
+    }      
+</style>
+<div class="register-container">
+    <h2 class="text-center">Login</h2>
+    <form novalidate action="{% url 'accounts:login' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-primary mt-3 button">Login</button>
+    </form>
+</div>
+{% endblock %}
