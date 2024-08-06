@@ -8,17 +8,37 @@
 <div class="app-content">
     <h1>Home</h1>
     <div>
+        <!-- New form to create a dataset -->
+        <form id="createDatasetForm">
+            <input type="text" id="datasetName" name="dataset_name" placeholder="Dataset Name">
+            <button type="button" class="button-app" onclick="createDataset()">Create Dataset</button>
+        </form>
+        <!-- Dropdown menu to list datasets -->
+        <select id="datasetDropdown">
+            <option value="">Select a dataset</option>            
+        </select>
+        <!-- New form to delete a dataset -->
+        <form id="deleteDatasetForm">
+            <button type="button" class="button-app" onclick="deleteDataset()">Delete Dataset</button>
+        </form>
         <form id="uploadForm" enctype="multipart/form-data">
             <input type="file" id="fileInput" name="images" multiple>
             <button type="button" class="button-app" onclick="uploadImages()">Upload</button>
-        </form>
+        </form>        
         <button type="button" class="button-app" onclick="showImages()">Show Images</button>
         <div id="imageGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;"></div>
         <p id="fileCount"></p>
+        
         <script>
             function uploadImages() {
                 const form = document.getElementById('uploadForm');
                 const formData = new FormData(form);
+                
+                // Get the selected dataset
+                const selectedDataset = document.getElementById('datasetDropdown').value;
+                
+                // Add the selected dataset to the form data
+                formData.append('dataset', selectedDataset);
         
                 fetch('/upload/', {
                     method: 'POST',
@@ -27,19 +47,41 @@
                         'X-CSRFToken': '{{ csrf_token }}'
                     }
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown error');
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    console.log('Success:', data);
+                    console.log('Success:', data);                    
                     document.getElementById('fileCount').innerText = `${data.files_count} files uploaded`;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                });
+                    alert(error.message);
+                }); 
             }
-            function showImages() {
-                fetch('/list_images/')
-                .then(response => response.json())
+            function showImages() {           
+                // Get the selected dataset
+                const selectedDataset = document.getElementById('datasetDropdown').value;
+
+                fetch(`/list_images/?dataset=${selectedDataset}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown error');
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    if (data.images.length === 0) {
+                        alert('No images found in the dataset');
+                        return;
+                    }
                     const imageGrid = document.getElementById('imageGrid');
                     imageGrid.innerHTML = '';
                     data.images.forEach(image => {
@@ -53,8 +95,88 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                });
+                    alert(error.message);
+                }); 
+            }        
+                
+            function createDataset() {
+                const form = document.getElementById('createDatasetForm');
+                const formData = new FormData(form);
+                
+                fetch('/create_dataset/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown error');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    loadDatasets();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error.message);
+                });                
             }
+            function deleteDataset() {
+                // Get the selected dataset
+                const selectedDataset = document.getElementById('datasetDropdown').value;
+
+                fetch(`/delete_dataset/?dataset=${selectedDataset}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown error');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Dataset deleted successfully');
+                    loadDatasets();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error.message);
+                });                
+            }
+            function loadDatasets() {
+                fetch('/list_datasets/')
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown error');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const dropdown = document.getElementById('datasetDropdown');
+                    dropdown.innerHTML = '<option value="">Select a dataset</option>';
+                    data.datasets.forEach(dataset => {
+                        const option = document.createElement('option');
+                        option.value = dataset;
+                        option.text = dataset;
+                        dropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error creating dataset: ' + error.message);
+                });  
+            }
+            // Load datasets when the page loads
+            document.addEventListener('DOMContentLoaded', loadDatasets);
         </script>
     </div>
 </div>

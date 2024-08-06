@@ -13,5 +13,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('app/', views.app, name='app'),
     path('upload/', views.upload_files, name='upload_files'),
-    path('list_images/', views.list_images, name='list_images'),    
+    path('list_images/', views.list_images, name='list_images'),
+    path('create_dataset/', views.create_dataset, name='create_dataset'),
+    path('delete_dataset/', views.delete_dataset, name='delete_dataset'),
+    path('list_datasets/', views.list_datasets, name='list_datasets'),   
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
