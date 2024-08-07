@@ -119,6 +119,7 @@
                     return response.json();
                 })
                 .then(data => {
+                    alert('Dataset created successfully');
                     console.log('Success:', data);
                     loadDatasets();
                 })
@@ -130,8 +131,9 @@
             function deleteDataset() {
                 // Get the selected dataset
                 const selectedDataset = document.getElementById('datasetDropdown').value;
+                const encodedDataset = encodeURIComponent(selectedDataset);
 
-                fetch(`/delete_dataset/?dataset=${selectedDataset}`)
+                fetch(`/delete_dataset/?dataset=${encodedDataset}`)
                 .then(response => {
                     if (!response.ok) {
                         return response.json().then(data => {

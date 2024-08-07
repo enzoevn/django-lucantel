@@ -82,6 +82,7 @@ def create_dataset(request):
     
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+
 def delete_dataset(request):
     if request.method == 'GET':
         user = request.user
@@ -96,7 +97,9 @@ def delete_dataset(request):
         if not os.path.exists(dataset_folder):            
             return JsonResponse({'error': 'No dataset selected'}, status=400)
         else:
-            os.rmdir(dataset_folder)
+            # Delete directory and its contents
+            print(dataset_folder)
+            os.system(f'rm -rf "{dataset_folder}"')
             return JsonResponse({'message': 'Dataset deleted successfully'}, status=200)
     
     return JsonResponse({'error': 'Invalid request'}, status=400)
